@@ -12,7 +12,7 @@ function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadTodos());
-  }, []);
+  }, [dispatch]);
   const addTodo = (data: Todo) => {
     dispatch(addTodos(data));
   };
