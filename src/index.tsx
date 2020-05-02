@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import thunk from "redux-thunk";
+import logger from "redux-logger";
 import { Provider } from "react-redux";
 import { createStore, combineReducers, compose, applyMiddleware } from "redux";
 import { todoReducer } from "./store/reducers";
@@ -19,8 +20,12 @@ const rootReducer = combineReducers({
   todos: todoReducer,
 });
 export type RootState = ReturnType<typeof rootReducer>;
-
 let middleware = [thunk];
+if (process.env.NODE_ENV === "development") {
+  const freeze = require("redux-freeze");
+  middleware = [...middleware, logger, freeze];
+}
+
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
   rootReducer,
